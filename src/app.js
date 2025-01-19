@@ -19,4 +19,16 @@ app.use(cookieParser())// cookies ko access or set krne ke liye
 
 
 
+// routes import
+
+import userRouter from "./routes/users.routes.js"
+
+
+// routes declaration 
+
+app.use("/api/v1/users", userRouter)
+
+// http://localhost:8000/api/v1/users/register
+
+
 export { app }
