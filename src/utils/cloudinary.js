@@ -6,9 +6,9 @@ import fs from "fs";
 
 
 cloudinary.config({
-  cloud_name: "dlgubtlb2",
-  api_key: "735326977713414",
-  api_secret: "hht-k_WDDhuvb_6OlAkJRbbNSPg", // Click 'View API Keys' above to copy your API secret
+  cloud_name: process.env.CLODINARY_CLOUD_NAME,
+  api_key: process.env.CLODINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET, 
 });
 
 
@@ -21,11 +21,11 @@ const uploadatCloudinary = async (localFilePath) => {
             resource_type: "auto"
           });
         
-        console.log("file uploaded!!"),
-        response.url();
+        console.log("file uploaded!!",response.url);
+        // fs.unlinkSync(localFilePath)
         return response;
     } catch (error) {
-        fs.unlinkSync(localFilePath) // remove locally save te,porary files
+        fs.unlinkSync(localFilePath) // remove locally save temporary files
         return null;
     }
 }

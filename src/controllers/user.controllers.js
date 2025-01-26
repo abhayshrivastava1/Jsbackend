@@ -38,15 +38,15 @@ const registerUser = asyncHandler( async(req,res) => {
   if (
     [fullname, email, username, password].some((field) => field?.trim() === "")
   ) {
-    throw new apierror(400, "Please fill all fields");
+    throw new apierror(400, "Please fill all fields")
   }
 
-  const existedUser = Users.findOne({
+  const existedUser = await Users.findOne({
     $or: [{ username }, { email }],
-  });
+  })
 
   if (existedUser) {
-    throw new apierror(409, "User existed");
+    throw new apierror(409, "User existed")
   }
 
   // checking for avatar
@@ -63,14 +63,24 @@ const registerUser = asyncHandler( async(req,res) => {
 
   const avatarPathLocal = req.files?.avatar[0]?.path; // another way of writing above if else code
 
-  const coverImagePathLocal = req?.files.coverImage[0]?.path;
+  // const coverImagePathLocal = req?.files.coverImage[0]?.path;
+
+  let coverImageLocalPath;
+  if (
+    req.files &&
+    Array.isArray(req.files.coverImage) &&
+    req.files.coverImage.length > 0
+  ) {
+    coverImageLocalPath = req.files.coverImage[0].path;
+  }
 
   if (!avatarPathLocal) {
+    console.log("Avatar not provided:", req.files);
     throw new apierror(400, "Avatar is compulsory");
   }
 
   const avatar = await uploadatCloudinary(avatarPathLocal);
-  const coverImage = await uploadatCloudinary(coverImagePathLocal);
+  const coverImage = await uploadatCloudinary(coverImageLocalPath);
 
   if (!avatar) {
     throw new apierror(400, "Avatar is compulsory");
