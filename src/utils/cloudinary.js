@@ -31,4 +31,18 @@ const uploadatCloudinary = async (localFilePath) => {
 }
 
 
+// import { v2 as cloudinary } from 'cloudinary';
+
+// (async function() {
+
+//     // Configuration
+//     cloudinary.config({
+//       cloud_name: "dlgubtlb2",
+//       api_key: "363158769976838",
+//       api_secret: "Bz8kMwo-NnbqPZqDVilND33bgI0", // Click 'View API Keys' above to copy your API secret
+//     });
+
+//   })
+
+
 export {uploadatCloudinary}
