@@ -31,4 +31,11 @@ app.use("/api/v1/users", userRouter)
 // http://localhost:8000/api/v1/users/register
 
 
+app.use((req, res, next) => {
+  console.log(`[REQUEST] ${req.method} ${req.url} - Body:`, req.body);
+  next();
+});
+
+
+
 export { app }

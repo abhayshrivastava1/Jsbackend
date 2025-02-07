@@ -15,6 +15,11 @@
 import express from "express";
 import { upload } from "../middlewares/multer.middleware.js"; // Import multer
 import { registerUser } from "../controllers/user.controllers.js";
+import { loginUser } from "../controllers/user.controllers.js";
+import { logoutUser } from "../controllers/user.controllers.js";
+import { refreshAccessToken } from "../controllers/user.controllers.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
+
 
 const router = express.Router();
 
@@ -32,5 +37,12 @@ router.post(
   ]),
   registerUser
 );
+
+router.route("/login").post(loginUser);
+
+router.route("/logout").post(verifyJWT, logoutUser);
+router.route("/refresh-token").post(refreshAccessToken);
+
+
 
 export default router;

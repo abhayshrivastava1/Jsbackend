@@ -1,6 +1,7 @@
-import {apierror} from "../utils/apierror"
-import {asyncHandler} from "../utils/asyncHandler"
-import {Users} from ".."
+import {apierror} from "../utils/apierror.js"
+import {asyncHandler} from "../utils/asynchandler.js"
+import { Users } from "../models/user.models.js";
+import  jwt from "jsonwebtoken"
 
 
 
@@ -14,9 +15,9 @@ const verifyJWT = asyncHandler(async(req,res,next) => {
             throw new apierror(401, "Unauthorized Request");
         }
     
-        const decodedTokwn = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     
-        const user = await Users.findById(decodedTokwn?._id).select("-password", "-refreshToken");
+        const user = await Users.findById(decodedToken?._id).select("-password", "-refreshToken");
     
         if(!user){
             throw new apierror(401, "Invalid Acc ess Token")
@@ -29,3 +30,5 @@ const verifyJWT = asyncHandler(async(req,res,next) => {
     }
 
 })
+
+export { verifyJWT }
