@@ -4,7 +4,7 @@ import { apierror } from "../utils/apierror.js";
 import { uploadatCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/apiresponse.js";
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 
 
@@ -222,6 +222,8 @@ const registerUser = asyncHandler( async(req,res) => {
 
 // })
 
+
+
 const loginUser = asyncHandler(async (req, res) => {
   console.log("Login function hit!"); // Check if function is being called
   console.log("Request Body:", req.body); // Debug request data
@@ -304,6 +306,8 @@ const logoutUser = asyncHandler(async(req,res) => {
 
 })
 
+
+
 const refreshAccessToken = asyncHandler(async (req,res) => {
   const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
@@ -350,6 +354,21 @@ const refreshAccessToken = asyncHandler(async (req,res) => {
   }
 })
 
+
+const changeCurrentPassword = asyncHandler(async (req,res) => {
+
+  const { oldpassword, newpassword} = req.body
+
+  const user = await Users.findById(req.user?._id);
+
+  const isPasswordCorrect = await Users.isPasswordCorrect(oldpassword)
+
+  if(!isPasswordCorrect){
+    throw new apierror(400, "Wrong password")
+  }
+
+
+})
 
 export {registerUser, loginUser, logoutUser, refreshAccessToken}
 
